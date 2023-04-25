@@ -1,6 +1,55 @@
-/**
- * This file is just a silly example to show everything working in the browser.
- * When you're ready to start on your site, clear the file. Happy hacking!
- **/
+import { registerImage } from "./lazy";
 
-console.log('Happy hacking :)')
+const minimum = 1;
+const maximum = 122;
+const random = () => Math.floor(Math.random() * (maximum - minimum)) + minimum;
+
+const createImageNode = () => {
+
+    const container = document.createElement("div");
+    container.className = "p-4";
+    container.style.display = "inline-block";
+
+    const imageWrapper = document.createElement("div");
+    imageWrapper.className = "bg-gray-300";
+    imageWrapper.style.minHeight = "100px";
+    imageWrapper.style.display = "inline-block";
+
+    const imagen = document.createElement("img");
+    imagen.className = "mx-auto";
+    imagen.width = "320";
+    imagen.dataset.src = `https://randomfox.ca/images/${random()}.jpg`
+
+    imageWrapper.appendChild(imagen);
+    container.appendChild(imageWrapper);
+
+    return container;
+
+}
+
+
+const mountNode = document.getElementById("images");
+
+const addButton = document.querySelector("#add");
+const cleanButton = document.querySelector("#clean");
+
+const addImage = () => {
+
+    const newImage = createImageNode();
+    mountNode.appendChild(newImage);
+    registerImage(newImage);
+    
+}
+
+const cleanImages = () => {
+
+    console.log(mountNode.childNodes);
+
+    [...mountNode.childNodes].forEach(child => {
+        child.remove();
+    }) 
+
+}
+
+addButton.addEventListener("click", addImage)
+cleanButton.addEventListener("click", cleanImages)
